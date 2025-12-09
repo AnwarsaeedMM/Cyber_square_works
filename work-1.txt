@@ -1,124 +1,239 @@
-1)-  create user 'user1'@'localhost' identified by 'test123#'; 
-     create user 'user2'@'localhost' identified by 'test123#';  
-     create user 'user3'@'localhost' identified by 'test123#';
-2)- drop user 'user2'@'localhost'
-3)-  create database training_db1;   
-     create database training_db2;
-4)-  drop database training_db2;
-5)-grant all privileges on training_db1.* to 'user1'@'localhost';
-6)- create database training_db3;
-7)- grant all privileges on training_db3.* to 'user1'@'localhost';
-8)- grant all privileges on training_db3.* to 'user3'@'localhost';
-9)- revoke all privileges on training_db3.* from 'user1'@'localhost';
-10) create database inventory_system
-     use inventory_system
-10-a)create table items(item_id int auto_increment primary key,name varchar(150) not null,purchase_price decimal(10,2),selling_price decimal(10,2),category_name varchar(150) not null);
-10-b)create table stock(stock_id int auto_increment primary key,item_id int not null ,current_quantity int check (current_quantity>=0),last_updated date,foreign key(item_id) references items(item_id));
-10-c)create table transactions(transaction_id int auto_increment primary key,item_id int not null,quantity int check (quantity>0),transaction_type Enum('IN','OUT'),transaction_date DATETIME DEFAULT NOW(),foreign key(item_id) references items(item_id));
-11)
------
-items
------
+   ------------------------
+1)-Create user1,user2,user3
+   ------------------------
+         create user 'user1'@'localhost' identified by 'test123#'; 
+         create user 'user2'@'localhost' identified by 'test123#';  
+         create user 'user3'@'localhost' identified by 'test123#';
+
+   ------------
+2)-Delete user2
+   ------------
+         drop user 'user2'@'localhost'
+
+    -------------------------------
+3)-Create training_db1,training_db1
+    -------------------------------
+         create database training_db1;   
+         create database training_db2;
    
-INSERT INTO items (name, purchase_price, selling_price, category_name) VALUES
-('Laptop Lenovo', 35000.00, 42000.00, 'Electronics'),
-('Samsung Mobile', 15000.00, 18500.00, 'Electronics'),
-('USB Keyboard', 350.00, 500.00, 'Accessories'),
-('Wireless Mouse', 400.00, 650.00, 'Accessories'),
-('LED Monitor 24', 7500.00, 9000.00, 'Electronics'),
-('Office Chair', 2000.00, 2600.00, 'Furniture'),
-('Study Table', 3000.00, 3800.00, 'Furniture'),
-('Water Bottle', 80.00, 120.00, 'Home'),
-('Pendrive 32GB', 450.00, 600.00, 'Electronics'),
-('Bluetooth Speaker', 1000.00, 1500.00, 'Electronics'),
-('Backpack', 400.00, 600.00, 'Bags'),
-('Notebook Pack', 60.00, 100.00, 'Stationery'),
-('Pen Box', 30.00, 50.00, 'Stationery'),
-('Headphones', 600.00, 900.00, 'Accessories'),
-('Router WiFi', 1200.00, 1550.00, 'Electronics'),
-('Extension Box', 120.00, 180.00, 'Home'),
-('Wall Clock', 200.00, 300.00, 'Home'),
-('Desk Lamp', 350.00, 500.00, 'Home'),
-('Power Bank', 900.00, 1200.00, 'Electronics'),
-('Notebook Stand', 450.00, 700.00, 'Accessories');
+   ----------------------------
+4)-Delete database training_db2
+   ----------------------------
+         drop database training_db2;
 
------
-stock
------
-INSERT INTO stock (item_id, current_quantity, last_updated) VALUES
-(1, 5, '2025-01-10'),
-(2, 25, '2025-01-10'),
-(3, 40, '2025-01-10'),
-(4, 35, '2025-01-10'),
-(5, 9, '2025-01-10'),
-(6, 20, '2025-01-10'),
-(7, 18, '2025-01-10'),
-(8, 50, '2025-01-10'),
-(9, 22, '2025-01-10'),
-(10, 12, '2025-01-10'),
-(11, 16, '2025-01-10'),
-(12, 60, '2025-01-10'),
-(13, 55, '2025-01-10'),
-(14, 26, '2025-01-10'),
-(15, 19, '2025-01-10'),
-(16, 33, '2025-01-10'),
-(17, 27, '2025-01-10'),
-(18, 14, '2025-01-10'),
-(19, 21, '2025-01-10'),
-(20, 30, '2025-01-10');
+   -------------------------------------------------------------
+5)-Give permission for the user1 to access database training_db1
+   -------------------------------------------------------------
+         grant all privileges on training_db1.* to 'user1'@'localhost';
+
+   ----------------------------
+6)-Create database training_db3
+   ----------------------------
+        create database training_db3;
+
+   --------------------------------------------------------------
+7)- Give permission for the user1 to access database training_db3
+   --------------------------------------------------------------
+        grant all privileges on training_db3.* to 'user1'@'localhost';
+
+   ---------------------------------------------------------------
+8)-Create permission for the user3 to access database training_db3
+   ---------------------------------------------------------------
+        grant all privileges on training_db3.* to 'user3'@'localhost';
+
+    ----------------------------------------------------------------------
+9)- revoke the permission of user1 for accessing the database training_db3
+    ----------------------------------------------------------------------
+        revoke all privileges on training_db3.* from 'user1'@'localhost';
+
+    --------------------------------
+10)-Create database inventory system
+    --------------------------------
+        create database inventory_system
+        use inventory_system
+
+      ------------------
+10-a)-Create table Items
+      ------------------
+        create table items(
+        item_id int auto_increment primary key,
+        name varchar(150) not null,
+        purchase_price decimal(10,2),
+        selling_price decimal(10,2),
+        category_name varchar(150) not null
+        );
+
+      ------------------
+10-b)-Create table stock
+      ------------------    
+        create table stock(
+        stock_id int auto_increment primary key,
+        item_id int not null,
+        current_quantity int check (current_quantity>=0),
+        last_updated date,
+        foreign key(item_id) references items(item_id)
+        );
+
+      -------------------------
+10-c)-Create table transactions
+      -------------------------
+        create table transactions(
+        transaction_id int auto_increment primary key,
+        item_id int not null,quantity int check (quantity>0),
+        transaction_type Enum('IN','OUT'),
+        transaction_date DATETIME DEFAULT NOW(),
+        foreign key(item_id) references items(item_id)
+        );
+
+    ---------------------------------
+11)-Insert 20 values into table items
+    ---------------------------------
+        INSERT INTO items (name, purchase_price, selling_price, category_name) VALUES
+        ('Laptop Lenovo', 35000.00, 42000.00, 'Electronics'),
+        ('Samsung Mobile', 15000.00, 18500.00, 'Electronics'),
+        ('USB Keyboard', 350.00, 500.00, 'Accessories'),
+        ('Wireless Mouse', 400.00, 650.00, 'Accessories'),
+        ('LED Monitor 24', 7500.00, 9000.00, 'Electronics'),
+        ('Office Chair', 2000.00, 2600.00, 'Furniture'),
+        ('Study Table', 3000.00, 3800.00, 'Furniture'),
+        ('Water Bottle', 80.00, 120.00, 'Home'),
+        ('Pendrive 32GB', 450.00, 600.00, 'Electronics'),
+        ('Bluetooth Speaker', 1000.00, 1500.00, 'Electronics'),
+        ('Backpack', 400.00, 600.00, 'Bags'),
+        ('Notebook Pack', 60.00, 100.00, 'Stationery'),
+        ('Pen Box', 30.00, 50.00, 'Stationery'),
+        ('Headphones', 600.00, 900.00, 'Accessories'),
+        ('Router WiFi', 1200.00, 1550.00, 'Electronics'),
+        ('Extension Box', 120.00, 180.00, 'Home'),
+        ('Wall Clock', 200.00, 300.00, 'Home'),
+        ('Desk Lamp', 350.00, 500.00, 'Home'),
+        ('Power Bank', 900.00, 1200.00, 'Electronics'),
+        ('Notebook Stand', 450.00, 700.00, 'Accessories');
+
+    ---------------------------------
+    Insert 20 values into table stock
+    ---------------------------------
+       INSERT INTO stock (item_id, current_quantity, last_updated) VALUES
+       (1, 5, '2025-01-10'),
+       (2, 25, '2025-01-10'),
+       (3, 40, '2025-01-10'),
+       (4, 35, '2025-01-10'),
+       (5, 9, '2025-01-10'),
+       (6, 20, '2025-01-10'),
+       (7, 18, '2025-01-10'),
+       (8, 50, '2025-01-10'),
+       (9, 22, '2025-01-10'),
+       (10, 12, '2025-01-10'),
+       (11, 16, '2025-01-10'),
+       (12, 60, '2025-01-10'),
+       (13, 55, '2025-01-10'),
+       (14, 26, '2025-01-10'),
+       (15, 19, '2025-01-10'),
+       (16, 33, '2025-01-10'),
+       (17, 27, '2025-01-10'),
+       (18, 14, '2025-01-10'),
+       (19, 21, '2025-01-10'),
+       (20, 30, '2025-01-10');
 
 
-------------
-transactions
-------------
-INSERT INTO transactions (item_id, quantity, transaction_type) VALUES
-(1, 5, 'IN'),
-(2, 10, 'OUT'),
-(3, 8, 'IN'),
-(4, 6, 'OUT'),
-(5, 3, 'IN'),
-(6, 4, 'OUT'),
-(7, 2, 'IN'),
-(8, 15, 'IN'),
-(9, 5, 'OUT'),
-(10, 3, 'IN'),
-(11, 7, 'IN'),
-(12, 20, 'OUT'),
-(13, 10, 'IN'),
-(14, 4, 'OUT'),
-(15, 6, 'IN'),
-(16, 12, 'IN'),
-(17, 8, 'OUT'),
-(18, 5, 'IN'),
-(19, 9, 'OUT'),
-(20, 7, 'IN');
+    ---------------------------------------
+    Insert 20 values into tabletransactions
+    ---------------------------------------
+      INSERT INTO transactions (item_id, quantity, transaction_type) VALUES
+      (1, 5, 'IN'),
+      (2, 10, 'OUT'),
+      (3, 8, 'IN'),
+      (4, 6, 'OUT'),
+      (5, 3, 'IN'),
+      (6, 4, 'OUT'),
+      (7, 2, 'IN'),
+      (8, 15, 'IN'),
+      (9, 5, 'OUT'),
+      (10, 3, 'IN'),
+      (11, 7, 'IN'),
+      (12, 20, 'OUT'),
+      (13, 10, 'IN'),
+      (14, 4, 'OUT'),
+      (15, 6, 'IN'),
+      (16, 12, 'IN'),
+      (17, 8, 'OUT'),
+      (18, 5, 'IN'),
+      (19, 9, 'OUT'),
+      (20, 7, 'IN');
 
-12)-   ->select * from items;
-       ->select * from items where selling_price>1000;
-       ->select * from items where category_name='Electronics';
+    -------------------------
+12)-Perform Select Operations 
+    -------------------------
+       ?->Show all items ?
+           select * from items;
 
-13)  ->select items.item_id,items.name as item_name,items.category_name,stock.current_quantity,stock.last_updated from items inner join stock on items.item_id=stock.item_id;
-     ->select transactions.transaction_id,items.name as item_name,transactions.quantity,transactions.transaction_type,transactions.transaction_date from transactions inner join items on transactions.transaction_id=items.item_id;
+       ?->Show items with selling price > 1000 ?
+           select * from items where selling_price>1000;
 
-14)-  ->select sum(stock.current_quantity *items.purchase_price) as Total_stock_value from stock inner join items on stock.item_id=items.item_id
-      ->select category_name, count(*) as Total_items from items group by category_name;
-      ->select items.item_id,items.name as item_name,stock.current_quantity from items inner join stock on items.item_id=stock.item_id where current_quantity<10;
+       ?->Select items belonging to category “Electronics” ?
+           select * from items where category_name='Electronics';
 
-15)- ->  create view item_overview as select items.name as item_name,items.category_name as category,items.purchase_price,items.selling_price,stock.current_quantity as current_stock_quantity from items inner join stock on items.item_id=stock.item_id;
-     ->select * from item_overview;
-   
-16)-  
-    ->delimiter //
-    ->create procedure add_stock(in p_item_id int,in p_quantity int)
-       begin
-       insert into transactions(item_id,transaction_type,quantity)
-       values(p_item_id,'IN',p_quantity);
-       update stock
-       set current_quantity = current_quantity + p_quantity
-       where item_id = p_item_id;
-       end //
-    ->delimiter ;
-    ->call add_stock(2,5);
-    ->select * from stock;
-    ->select * from transactions;
+    ------------
+13)-Join Queries
+    ------------
+       ?->Show each item with its current stock ?
+            select items.item_id,items.name as item_name,items.category_name,stock.current_quantity,stock.last_updated from items inner join stock on items.item_id=stock.item_id;
+
+       ?->Show each transaction with item name ?
+            select transactions.transaction_id,items.name as item_name,transactions.quantity,transactions.transaction_type,transactions.transaction_date from transactions inner join items on transactions.transaction_id=items.item_id;
+
+    -----------------
+14)-Aggregate Queries
+    -----------------
+      ?->Find total stock value ?
+           select sum(stock.current_quantity *items.purchase_price) as Total_stock_value from stock inner join items on stock.item_id=items.item_id;
+
+      ?->Find total items in category-wise grouping ?
+           select category_name, count(*) as Total_items from items group by category_name;
+
+      ?->Show items that have stock less than 10 ?
+           select items.item_id,items.name as item_name,stock.current_quantity from items inner join stock on items.item_id=stock.item_id where current_quantity<10;
+
+    -----
+15)-Views
+    -----
+       ?->Create a view named item_overview that shows:
+
+		->item name
+
+		->category
+
+		->purchase price
+
+		->selling price
+
+		->current stock quantity  ?
+
+            create view item_overview as select items.name as item_name,items.category_name as category,items.purchase_price,items.selling_price,stock.current_quantity as current_stock_quantity from items inner join stock on items.item_id=stock.item_id;
+           ->select * from item_overview;
+    ----------------
+16)-Stored Procedure
+    ---------------- 
+       ?-> Write a procedure add_stock(item_id, qty)
+
+	The procedure must:
+
+		->insert a new IN transaction
+
+		->increase the stock quantity ?
+
+
+            ->delimiter //
+            ->create procedure add_stock(in p_item_id int,in p_quantity int)
+              begin
+              insert into transactions(item_id,transaction_type,quantity)
+              values(p_item_id,'IN',p_quantity);
+              update stock
+              set current_quantity = current_quantity + p_quantity
+              where item_id = p_item_id;
+              end //
+          ->delimiter ;
+          ->call add_stock(2,5);
+          ->select * from stock;
+          ->select * from transactions;
     
